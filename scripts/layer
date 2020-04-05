@@ -1,0 +1,65 @@
+#!/usr/bin/env python
+import click
+import aws_layers
+
+
+@click.group()
+def cli():
+    pass
+
+
+@click.command(help="Bundles package for deployment.")
+@click.argument("filepath", type=click.Path(exists=True), default=".")
+def build(filepath):
+    click.echo("Building package")
+    click.echo(aws_layers.build_layer_zip(working_dir=filepath))
+
+
+@click.command(help="Deploy layer to aws")
+@click.argument("filepath", type=click.Path(exists=True))
+@click.option("-d", "--description", default="Empty desc", help="Publish description")
+@click.option("--runtime", default="python2", help="set python runtime")
+def deploy(filepath, description, runtime):
+    click.echo(
+        aws_layers.deploy_layer_zip(
+            path_to_zip_file=filepath, description=description, runtime=runtime
+        )
+    )
+
+
+@click.command(help="Download a layer")
+@click.argument("layer", type=click.STRING)
+@click.option("-v", "--version", "version", type=int)
+def download(layer, version):
+    click.echo(aws_layers.download_layer_zip(layer_name=layer, version_number=version))
+
+
+@click.command(
+    help="Set comma or space separated layers in the latest version to a function",
+    name="set",
+)
+@click.argument("layer", nargs=-1)
+@click.argument("func", nargs=1)
+def set_layer(layer, func):
+    if "," in layer[0][:]:
+        layer = tuple(filter(None, layer[0].split(",")))
+    click.echo(aws_layers.set_layer_to_lambda(list(layer), func))
+
+
+@click.command(help="List all layers", name="list")
+def list_layers():
+    layer_list = aws_layers.list_all_layers()
+    if layer_list:
+        for layer in layer_list:
+            click.echo(layer)
+    else:
+        click.echo("No layers in this region")
+
+
+if __name__ == "__main__":
+    cli.add_command(build)
+    cli.add_command(deploy)
+    cli.add_command(download)
+    cli.add_command(set_layer)
+    cli.add_command(list_layers)
+    cli()
