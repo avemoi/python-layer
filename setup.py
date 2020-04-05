@@ -17,9 +17,9 @@ setup(
     author="Charalampos Mageiridis",
     author_email="cmageiridis@protonmail.com",
     packages=find_packages(),
-    license="ISCL",
+    license="MIT",
     classifiers=[
-        "License :: OSI Approved :: ISC License (ISCL)",
+        'License :: OSI Approved :: MIT License',
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.7",
     ],
