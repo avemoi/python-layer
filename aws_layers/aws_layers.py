@@ -73,7 +73,9 @@ def deploy_layer_zip(
     return response["ResponseMetadata"]["HTTPStatusCode"]
 
 
-def download_layer_zip(layer_name: str, version_number: int) -> str:
+def download_layer_zip(
+    layer_name: str, version_number: int, aws_profile: str, region: str
+) -> str:
     if not version_number:
         try:
             version_number = [
@@ -85,7 +87,7 @@ def download_layer_zip(layer_name: str, version_number: int) -> str:
             return "Empty version, wrong layer name?"
 
     try:
-        response = get_client().get_layer_version(
+        response = get_client(aws_profile, region).get_layer_version(
             LayerName=layer_name, VersionNumber=version_number
         )
         download_url = response["Content"]["Location"]
@@ -110,8 +112,8 @@ def set_layer_to_lambda(layer_names: list, function_name: str) -> int:
     return response["ResponseMetadata"]["HTTPStatusCode"]
 
 
-def list_all_layers() -> list:
-    client = get_client()
+def list_all_layers(aws_profile: str, region: str) -> list:
+    client = get_client(aws_profile, region)
     layers = client.list_layers()["Layers"]
     if layers:
         return [

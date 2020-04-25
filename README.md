@@ -21,16 +21,34 @@ To create a new layer:
 Here we suppose that ```mydir``` has at least the requirements file.
 
 To deploy the layer to aws:
-``` layer deploy -d myshortdescription --runtime python3.7 ```
+``` layer deploy path/to/zip -d myshortdescription --runtime python3.7 ```
+
+To deploy the layer to aws to a specific region
+ ```layer deploy path/to/zip -r region_name```
+
+To deploy the layer to aws to a specific region and to a specific profile (e.g. dev profile) 
+```layer deploy path/to/zip -p dev_profile -r region_name``` 
 
 To list the available layers:
 ```layer list ```
+
+To list the available layers from a specific region:
+```layer list -r region_name```
+
+To list the available layers from a specific region and from a specific profile (e.g. dev profile):
+```layer list -r region_name -p dev_profile```
 
 To set a layer to a lambda function (latest version of the layer):
 ``` layer set mylayer mylambda```
 
 To download a layer
 ``` layer download mylayer```
+
+To download a layer from a specific region:
+``` layer download mylayer -v version_number -r region_name```
+
+To download a layer from a specific region and from a specific profile (e.g. dev profile):
+``` layer download mylayer -v version_number -r region_name -p dev_profile```
 
 ## Notes
 * Currently the script uses the credentials from the ```~/.aws/config``` file.
