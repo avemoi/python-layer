@@ -38,8 +38,20 @@ To list the available layers from a specific region:
 To list the available layers from a specific region and from a specific profile (e.g. dev profile):
 ```layer list -r region_name -p dev_profile```
 
-To set a layer to a lambda function (latest version of the layer):
+To set a layer to a lambda function (appends the latest version of the layer):
 ``` layer set mylayer mylambda```
+
+To set a layer to a lambda function (appends the latest version of the layer) to a specific region:
+``` layer set mylayer mylambda -r region_name```
+
+To set a layer to a lambda function (appends the latest version of the layer) to a specific region and to a specific profile:
+``` layer set mylayer mylambda -p dev_profile -r region_name```
+
+To set a list of layers:
+``` layer set mylayer1,mylayer2 mylambda```
+
+To set a list of layers replacing the older ones :
+``` layer set mylayer1,mylayer2 mylambda -d```
 
 To download a layer
 ``` layer download mylayer```

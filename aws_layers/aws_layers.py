@@ -5,6 +5,7 @@ import datetime
 from aws_layers.layer_utils import read_layer
 from aws_layers.layer_utils import get_client
 from aws_layers.layer_utils import get_layer_arn
+from aws_layers.layer_utils import get_current_lambda_layers
 import wget
 
 
@@ -96,9 +97,15 @@ def download_layer_zip(
         return "The resource you requested does not exist."
 
 
-def set_layer_to_lambda(layer_names: list, function_name: str) -> int:
-    all_layers = list_all_layers()
-
+def set_layer_to_lambda(
+    layer_names: list,
+    function_name: str,
+    delete_old: bool,
+    aws_profile: str = None,
+    region: str = None,
+) -> int:
+    all_layers = list_all_layers(aws_profile, region)
+    boto3_client = get_client(aws_profile, region)
     layers_arn = [
         get_layer_arn(layer_obj)
         for layer_obj in all_layers
@@ -106,13 +113,16 @@ def set_layer_to_lambda(layer_names: list, function_name: str) -> int:
         if layer_name == layer_obj["Layer_name"]
     ]
 
-    response = get_client().update_function_configuration(
+    if not delete_old:
+        layers_arn.extend(get_current_lambda_layers(boto3_client, function_name))
+
+    response = boto3_client.update_function_configuration(
         FunctionName=function_name, Layers=[*layers_arn]
     )
     return response["ResponseMetadata"]["HTTPStatusCode"]
 
 
-def list_all_layers(aws_profile: str, region: str) -> list:
+def list_all_layers(aws_profile: str = None, region: str = None) -> list:
     client = get_client(aws_profile, region)
     layers = client.list_layers()["Layers"]
     if layers:

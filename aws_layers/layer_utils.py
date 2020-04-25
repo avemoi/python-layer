@@ -27,3 +27,12 @@ def get_layer_arn(layer: dict) -> str:
     :return:
     """
     return layer["Layer_arn"] + ":" + str(layer["Layer_version"])
+
+
+def get_current_lambda_layers(boto3_client: object, function_name: str) -> list:
+    """
+    Return the current layers of the lambda function
+    """
+    lambda_config = boto3_client.get_function_configuration(FunctionName=function_name)
+    current_layers = lambda_config.get("Layers", [])
+    return [] if not current_layers else [obj["Arn"] for obj in lambda_config["Layers"]]

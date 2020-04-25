@@ -52,10 +52,17 @@ def download(layer, version, profile, region):
 )
 @click.argument("layer", nargs=-1)
 @click.argument("func", nargs=1)
-def set_layer(layer, func):
+@click.option("-d", "--delete", is_flag=True)
+@click.option("-p", "--profile")
+@click.option("-r", "--region")
+def set_layer(layer, func, delete, profile, region):
     if "," in layer[0][:]:
         layer = tuple(filter(None, layer[0].split(",")))
-    click.echo(aws_layers.set_layer_to_lambda(list(layer), func))
+    click.echo(
+        aws_layers.set_layer_to_lambda(
+            list(layer), func, delete_old=delete, aws_profile=profile, region=region
+        )
+    )
 
 
 @click.command(help="List all layers", name="list")
