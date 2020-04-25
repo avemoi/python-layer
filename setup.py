@@ -10,7 +10,7 @@ REQ = (HERE / "requirements.txt").read_text()
 
 setup(
     name="python-layer",
-    version="1.0.1",
+    version="1.1.2",
     description="Manage aws layers",
     long_description=README,
     long_description_content_type="text/markdown",
