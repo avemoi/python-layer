@@ -18,7 +18,7 @@ def build(filepath):
 @click.command(help="Deploy layer to aws")
 @click.argument("filepath", type=click.Path(exists=True))
 @click.option("-d", "--description", default="Empty desc", help="Publish description")
-@click.option("--runtime", default="python3", help="set python runtime")
+@click.option("--runtime", default="python3.6", help="set python runtime")
 @click.option("-p", "--profile")
 @click.option("-r", "--region")
 def deploy(filepath, description, runtime, profile, region):
