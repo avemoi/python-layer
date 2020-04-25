@@ -65,7 +65,7 @@ def deploy_layer_zip(path_to_zip_file: str, description: str, runtime: str) -> i
         LayerName=layer_name,
         Description=description,
         Content={"ZipFile": byte_stream},
-        CompatibleRuntimes=["python2.7" if runtime == "python2" else runtime],
+        CompatibleRuntimes=[runtime],
         LicenseInfo="string",
     )
     return response["ResponseMetadata"]["HTTPStatusCode"]

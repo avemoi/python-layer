@@ -18,7 +18,7 @@ def build(filepath):
 @click.command(help="Deploy layer to aws")
 @click.argument("filepath", type=click.Path(exists=True))
 @click.option("-d", "--description", default="Empty desc", help="Publish description")
-@click.option("--runtime", default="python2", help="set python runtime")
+@click.option("--runtime", default="python3", help="set python runtime")
 def deploy(filepath, description, runtime):
     click.echo(
         aws_layers.deploy_layer_zip(
