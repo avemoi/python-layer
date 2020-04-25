@@ -13,21 +13,10 @@ def read_layer(path, loader=None, binary_file=False):
 
 
 def get_client(
-    client=None,
-    profile_name=None,
-    aws_access_key_id=None,
-    aws_secret_access_key=None,
-    region=None,
+    profile_name=None, region=None,
 ):
     """Shortcut for getting an initialized instance of the boto3 client."""
-    #
-    # boto3.setup_default_session(
-    #     profile_name=profile_name,
-    #     aws_access_key_id=aws_access_key_id,
-    #     aws_secret_access_key=aws_secret_access_key,
-    #     region_name=region,
-    # )
-    # # return boto3.client(client)
+    boto3.setup_default_session(profile_name=profile_name, region_name=region)
     return boto3.client("lambda")
 
 

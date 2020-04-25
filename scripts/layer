@@ -19,10 +19,16 @@ def build(filepath):
 @click.argument("filepath", type=click.Path(exists=True))
 @click.option("-d", "--description", default="Empty desc", help="Publish description")
 @click.option("--runtime", default="python3", help="set python runtime")
-def deploy(filepath, description, runtime):
+@click.option("-p", "--profile")
+@click.option("-r", "--region")
+def deploy(filepath, description, runtime, profile, region):
     click.echo(
         aws_layers.deploy_layer_zip(
-            path_to_zip_file=filepath, description=description, runtime=runtime
+            path_to_zip_file=filepath,
+            description=description,
+            runtime=runtime,
+            aws_profile=profile,
+            region=region,
         )
     )
 

@@ -58,10 +58,12 @@ def build_layer_zip(working_dir: str) -> str:
     return "Something went wrong"
 
 
-def deploy_layer_zip(path_to_zip_file: str, description: str, runtime: str) -> int:
+def deploy_layer_zip(
+    path_to_zip_file: str, description: str, runtime: str, aws_profile: str, region: str
+) -> int:
     byte_stream = read_layer(path_to_zip_file, binary_file=True)
     layer_name = Path(path_to_zip_file).stem
-    response = get_client().publish_layer_version(
+    response = get_client(aws_profile, region).publish_layer_version(
         LayerName=layer_name,
         Description=description,
         Content={"ZipFile": byte_stream},
